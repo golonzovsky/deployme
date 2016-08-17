@@ -5,7 +5,7 @@
 
     <groupId>com.golonzovsky</groupId>
     <artifactId>deployme</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>deployme</name>
@@ -50,25 +50,33 @@
         <developerConnection>scm:git:https://github.com/golonzovsky/deployme.git</developerConnection>
     </scm>
 
+    <!--    <distributionManagement>
+            <repository>
+                <id>artifact-repository</id>
+                <url>http://utl</url>
+            </repository>
+        </distributionManagement>-->
+
     <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <executable>true</executable>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>pl.project13.maven</groupId>
                 <artifactId>git-commit-id-plugin</artifactId>
             </plugin>
-            <plugin>
+<!--            <plugin>
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.5.3</version>
                 <configuration>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                 </configuration>
+            </plugin>-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -78,6 +86,7 @@
                     <goals>install</goals>
                     <username>root</username>
                     <password>pass</password>
+                    <tag>${project.artifactId}-${project.version}</tag>
                 </configuration>
             </plugin>
         </plugins>
