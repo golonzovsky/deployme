@@ -1,3 +1,10 @@
+image: maven:3.3.9-jdk-8
+
+# Default stages
+stages:
+  - build
+  - test
+  - deploy
 
 variables:
   MAVEN_OPTS: "-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
@@ -8,25 +15,20 @@ cache:
     - /root/.m2/repository/
 
 validate:jdk8:
-  image: maven:3.3.9-jdk-8
   stage: build
   script:
     - 'mvn $MAVEN_CLI_OPTS compile'
 
 verify:jdk8:
-  image: maven:3.3.9-jdk-8
   stage: test
   script:
     - 'mvn $MAVEN_CLI_OPTS test'
-  except:
-    - master
 
-# For `master` branch run `mvn deploy` automatically.
 # To get this working you need to define a volume while configuring your gitlab-ci-multi-runner.
 # Mount your `settings.xml` as `/root/.m2/settings.xml` which holds your secrets.
 deploy:jdk8:
   # Use stage test here, so the pages job may later pickup the created site.
-  stage: test
+  stage: deploy
   script:
     - 'mvn $MAVEN_CLI_OPTS deploy site site:stage'
   only:
@@ -35,4 +37,3 @@ deploy:jdk8:
   artifacts:
     paths:
     - target/staging
-  image: maven:3.3.9-jdk-8
