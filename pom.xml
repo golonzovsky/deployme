@@ -24,10 +24,6 @@
         <java.version>1.8</java.version>
     </properties>
 
-    <scm>
-        <connection>scm:git:https://github.com/golonzovsky/deployme.git</connection>
-    </scm>
-
     <distributionManagement>
         <repository>
             <id>my_repo</id>
