@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import lombok.Data;
-
 @SpringBootApplication
 public class DeploymeApplication {
 
@@ -17,17 +15,9 @@ public class DeploymeApplication {
 }
 
 
-@RequestMapping("/")
 @RestController
-class DeploymeRestController {
+@RequestMapping("/")
+class HalloController {
 
-    @GetMapping
-    Message hello() {
-        return new Message("hallo");
-    }
-}
-
-@Data
-class Message {
-    final String text;
+    @GetMapping String hello() { return "hallo stranger"; }
 }
