@@ -4,16 +4,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>deployme-child-module</artifactId>
-    <version>0-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
     <description>Deployment sandbox</description>
 
     <parent>
-      <groupId>com.golonzovsky</groupId>
+        <groupId>com.golonzovsky</groupId>
         <artifactId>deployme</artifactId>
-        <version>0-SNAPSHOT</version>
+        <version>1.0-SNAPSHOT</version>
     </parent>
 
     <properties>
