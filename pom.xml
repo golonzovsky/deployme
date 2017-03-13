@@ -24,13 +24,6 @@
         <java.version>1.8</java.version>
     </properties>
 
-    <distributionManagement>
-        <repository>
-            <id>my_repo</id>
-            <url>file:${project.build.directory}/repository/</url>
-        </repository>
-    </distributionManagement>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -57,12 +50,12 @@
         <developerConnection>scm:git:https://github.com/golonzovsky/deployme.git</developerConnection>
     </scm>
 
-    <!--    <distributionManagement>
-            <repository>
-                <id>artifact-repository</id>
-                <url>http://utl</url>
-            </repository>
-        </distributionManagement>-->
+    <distributionManagement>
+        <repository>
+            <id>my_repo</id>
+            <url>file:${project.build.directory}/repository/</url>
+        </repository>
+    </distributionManagement>
 
     <build>
         <plugins>
@@ -74,13 +67,13 @@
                 <groupId>pl.project13.maven</groupId>
                 <artifactId>git-commit-id-plugin</artifactId>
             </plugin>
-<!--            <plugin>
+            <plugin>
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.5.3</version>
                 <configuration>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                 </configuration>
-            </plugin>-->
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
@@ -91,8 +84,6 @@
                 <version>1.9.5</version>
                 <configuration>
                     <goals>install</goals>
-                    <username>root</username>
-                    <password>pass</password>
                     <tag>${project.artifactId}-${project.version}</tag>
                 </configuration>
             </plugin>
