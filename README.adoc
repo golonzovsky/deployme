@@ -1,0 +1,33 @@
+= deployme
+Dummy project for deployment investigations.
+
+=== rough list of possible todo:
+
+- [ ] maven release plugin
+- [ ] scm plugin
+
+- [ ] marathon
+
+- [ ] docker
+- [ ] docker repository
+
+- [ ] gitlab ci
+- [ ] consider using something bigger e.g. https://github.com/golonzovsky/vehicle-fleet-demo[vehicle fleet] or https://github.com/joshlong/bootiful-microservices[bootiful microservices]
+
+=== releasing
+. checkout 1.0-SNAPSHOT
+. update POM version to 1.0-RELEASE
+* `versions:set -DnewVersion=`
+. compile, test
+. commit, tag, publish, deploy
+* commit
+* `scm:tag -DVERSION_NUMBER=${BUILD_NUMBER}`
+* install, or `docker push`
+. update POM to 2.0-SNAPSHOT
+* `versions:set -DnewVersion=`
+. commit
+
+=== links
+https://gist.github.com/golonzovsky/ae9cb92c020f0b8833519447b7471281[tomcat-undeploy-all] +
+https://gist.github.com/golonzovsky/8e8e0c7e2acc69225c9757adbe1ccc15[mesos-tomcat] +
+https://axelfontaine.com/blog/final-nail.html[final nail to release plugin]
