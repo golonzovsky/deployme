@@ -8,8 +8,8 @@
     <version>0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>deployme</name>
-    <description>Demo project for Spring Boot</description>
+    <name>${project.artifactId}</name>
+    <description>Deployment sandbox</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -23,6 +23,17 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
     </properties>
+
+    <scm>
+        <connection>scm:git:https://github.com/golonzovsky/deployme.git</connection>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>my_repo</id>
+            <url>file:${project.build.directory}/repository/</url>
+        </repository>
+    </distributionManagement>
 
     <dependencies>
         <dependency>
