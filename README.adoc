@@ -24,15 +24,21 @@ Dummy project for deployment investigations.
 
 == releasing
 . checkout 1.0-SNAPSHOT
+  * `git clone`
 . update POM version to 1.0-RELEASE
-* `versions:set -DnewVersion=`
+  * `versions:set -DnewVersion=`
 . compile, test
+  * `mvn clean test`
+  * `docker build`
 . commit, tag, publish, deploy
-* commit
-* `scm:tag -DVERSION_NUMBER=${BUILD_NUMBER}`
-* install, or `docker push`
+  * commit
+  * `scm:tag -DVERSION_NUMBER=${BUILD_NUMBER}`
+  * publish
+    ** `mvn deploy`
+    ** `docker push`
+  * install, or `docker push`
 . update POM to 2.0-SNAPSHOT
-* `versions:set -DnewVersion=`
+  * `versions:set -DnewVersion=`
 . commit
 
 == links
