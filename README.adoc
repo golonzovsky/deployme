@@ -6,7 +6,7 @@ Dummy project for deployment investigations.
 ==== maven plugins
 - [ ] maven release plugin
 - [ ] maven scm plugin
-- [ ] maven versions plugin
+- [*] maven versions plugin
 - [ ] maven deploy plugin
 
 ==== containers
@@ -22,17 +22,19 @@ Dummy project for deployment investigations.
 ==== other
 - [ ] consider using something bigger e.g. https://github.com/golonzovsky/vehicle-fleet-demo[vehicle fleet] or https://github.com/joshlong/bootiful-microservices[bootiful microservices]
 
+'''
 == releasing
 . checkout 1.0-SNAPSHOT
   * `git clone`
 . update POM version to 1.0-RELEASE
-  * `versions:set -DnewVersion=`
+  * `mvn versions:set -DnewVersion=`
+  * `mvn versions:update-properties -Dincludes=com.example:*`
 . compile, test
   * `mvn clean test`
   * `docker build`
 . commit, tag, publish, deploy
   * commit
-  * `scm:tag -DVERSION_NUMBER=${BUILD_NUMBER}`
+  * `mvn scm:tag -DVERSION_NUMBER=${BUILD_NUMBER}`
   * publish
     ** `mvn deploy`
     ** `docker push`
@@ -40,6 +42,31 @@ Dummy project for deployment investigations.
 . update POM to 2.0-SNAPSHOT
   * `versions:set -DnewVersion=`
 . commit
+
+== Plugins
+=== Versions plugin
+http://www.mojohaus.org/versions-maven-plugin/usage.html
+
+==== Goals with no modifications
+ * `mvn versions:display-dependency-updates` deep dependency update candidates
+ * `mvn versions:display-property-updates`
+
+==== Goals with modifications:
+ * `mvn versions:set -DnewVersion=2.1.0-SNAPSHOT`
+ * `mvn versions:use-latest-releases` - update dependencies
+ * `mvn versions:update-parent`
+ * `mvn versions:update-properties` - update properties which are used as dependency versions
+ * `mvn versions:lock-snapshots`, `mvn versions:unlock-snapshots`
+
+==== Revert/Commit
+ * `mvn versions:revert`
+ * `mvn versions:commit`
+
+'''
+=== Release plugin
+
+==== Revert changes
+ * `mvn release:clean`
 
 == links
 https://gist.github.com/golonzovsky/ae9cb92c020f0b8833519447b7471281[tomcat-undeploy-all] +
