@@ -1,23 +1,24 @@
 = deployme
 Dummy project for deployment investigations.
 
-== rough list of possible todo:
+== possible todo:
 
 ==== maven plugins
-- [ ] maven release plugin
-- [ ] maven scm plugin
-- [ ] maven versions plugin
-- [ ] maven deploy plugin
+- [*] maven versions plugin
+- [*] maven release plugin
+- [*] maven build-helper plugin
+- [*] maven scm plugin
+- [*] maven deploy plugin
 
 ==== containers
 - [ ] docker
 - [ ] docker repository
 
-==== container orchestration
-- [ ] marathon
-
 ==== build pipeline
 - [ ] gitlab ci
+
+==== container orchestration
+- [ ] marathon
 
 ==== other
 - [ ] consider using something bigger e.g. https://github.com/golonzovsky/vehicle-fleet-demo[vehicle fleet] or https://github.com/joshlong/bootiful-microservices[bootiful microservices]
@@ -26,13 +27,14 @@ Dummy project for deployment investigations.
 . checkout 1.0-SNAPSHOT
   * `git clone`
 . update POM version to 1.0-RELEASE
-  * `versions:set -DnewVersion=`
+  * `mvn versions:set -DnewVersion=`
+  * `mvn versions:update-properties -Dincludes=com.example:*`
 . compile, test
   * `mvn clean test`
   * `docker build`
 . commit, tag, publish, deploy
   * commit
-  * `scm:tag -DVERSION_NUMBER=${BUILD_NUMBER}`
+  * `mvn scm:tag -DVERSION_NUMBER=${BUILD_NUMBER}`
   * publish
     ** `mvn deploy`
     ** `docker push`
@@ -40,6 +42,109 @@ Dummy project for deployment investigations.
 . update POM to 2.0-SNAPSHOT
   * `versions:set -DnewVersion=`
 . commit
+
+== Plugins
+Below are most relevant for deployment purposes. +
+Full list is available under: https://maven.apache.org/plugins/index.html
+
+=== Build-Helper plugin
+http://www.mojohaus.org/build-helper-maven-plugin/parse-version-mojo.html
+
+==== build-helper:parse-version
+Parses POM to find versions and sets properties:
+
+Current version properties: ::
+  * `parsedVersion.majorVersion`
+  * `parsedVersion.minorVersion`
+  * `parsedVersion.incrementalVersion`
+  * `parsedVersion.qualifier`
+  * `parsedVersion.buildNumber`
+
+Next version properties: ::
+  * `parsedVersion.nextMajorVersion`
+  * `parsedVersion.nextMinorVersion`
+  * `parsedVersion.nextIncrementalVersion`
+  * `parsedVersion.nextBuildNumber`
+
+=== Versions plugin
+http://www.mojohaus.org/versions-maven-plugin/usage.html +
+Use `generateBackupPoms=false` in command line or plugin configuration to avoid backup POMs generation.
+
+==== Goals with no modifications
+ * `mvn versions:display-dependency-updates` deep dependency update candidates
+ * `mvn versions:display-property-updates`
+
+==== Goals with modifications
+ * `mvn versions:set -DnewVersion=2.1.0-SNAPSHOT`
+ * `mvn versions:use-latest-releases` - update dependencies
+ * `mvn versions:update-parent`
+ * `mvn versions:update-properties` - update properties which are used as dependency versions
+ * `mvn versions:lock-snapshots`, `mvn versions:unlock-snapshots`
+
+==== Revert/Commit
+ * `mvn versions:revert`
+ * `mvn versions:commit`
+
+'''
+
+=== Release plugin
+Use `--batch-mode` for non-interactive mode. fro example `mvn release:update-versions --batch-mode`
+
+==== Process
+ * no SNAPSHOTs
+ * Change the version in the POMs from x-SNAPSHOT to a new version
+ * Run the project tests
+ * Commit the modified POMs
+ * Bump the version in the POMs to a new value y-SNAPSHOT
+ * Commit the modified POMs
+
+==== Tasks
+ * `mvn release:clean` Clean up after a release preparation.
+ * `mvn release:prepare` Prepare for a release in SCM.
+ * `mvn release:perform` Perform a release from SCM.
+ * `mvn release:update-versions` Update the versions in the POM(s).
+
+=== SCM plugin
+Task which may be useful for releasing: `mvn scm:tag` +
+Use `-DpushChanges=false` if push is done outside of maven. +
+In order to use project version as a tag:
+```
+<configuration>
+    <tag>${project.version}</tag>
+</configuration>
+```
+=== Deploy plugin
+Publish artifact to artifact repository. +
+Add following conf for it to work:
+```
+<distributionManagement>
+  <repository>
+    <id>internal.repo</id>
+    <url>http://repo.example.com/repository/example</url>
+  </repository>
+</distributionManagement>
+```
+And in `settings.xml`:
+```
+<server>
+  <id>internal.repo</id>
+  <username>maven</username>
+  <password>foobar</password>
+</server>
+```
+
+== Update process
+==== Remove SNAPSHOT
+`mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion} -DgenerateBackupPoms=false`
+
+==== Update release minor version
+`mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.nextMinorVersion}.0 -DgenerateBackupPoms=false`
+
+==== Update release iter version
+`mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion} -DgenerateBackupPoms=false`
+
+==== Update snapshot version
+`mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.nextMinorVersion}.0-SNAPSHOT -DgenerateBackupPoms=false`
 
 == links
 https://gist.github.com/golonzovsky/ae9cb92c020f0b8833519447b7471281[tomcat-undeploy-all] +
