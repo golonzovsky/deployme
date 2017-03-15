@@ -7,8 +7,8 @@ Dummy project for deployment investigations.
 - [*] maven versions plugin
 - [*] maven release plugin
 - [*] maven build-helper plugin
-- [ ] maven scm plugin
-- [ ] maven deploy plugin
+- [*] maven scm plugin
+- [*] maven deploy plugin
 
 ==== containers
 - [ ] docker
@@ -44,6 +44,8 @@ Dummy project for deployment investigations.
 . commit
 
 == Plugins
+Below are most relevant for deployment purposes. +
+Full list is available under: https://maven.apache.org/plugins/index.html
 
 === Build-Helper plugin
 http://www.mojohaus.org/build-helper-maven-plugin/parse-version-mojo.html
@@ -102,6 +104,35 @@ Use `--batch-mode` for non-interactive mode. fro example `mvn release:update-ver
  * `mvn release:perform` Perform a release from SCM.
  * `mvn release:update-versions` Update the versions in the POM(s).
 
+=== SCM plugin
+Task which may be useful for releasing: `mvn scm:tag` +
+Use `-DpushChanges=false` if push is done outside of maven. +
+In order to use project version as a tag:
+```
+<configuration>
+    <tag>${project.version}</tag>
+</configuration>
+```
+=== Deploy plugin
+Publish artifact to artifact repository. +
+Add following conf for it to work:
+```
+<distributionManagement>
+  <repository>
+    <id>internal.repo</id>
+    <url>http://repo.example.com/repository/example</url>
+  </repository>
+</distributionManagement>
+```
+And in `settings.xml`:
+```
+<server>
+  <id>internal.repo</id>
+  <username>maven</username>
+  <password>foobar</password>
+</server>
+```
+
 == Update process
 ==== Remove SNAPSHOT
 `mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion} -DgenerateBackupPoms=false`
@@ -111,6 +142,9 @@ Use `--batch-mode` for non-interactive mode. fro example `mvn release:update-ver
 
 ==== Update release iter version
 `mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion} -DgenerateBackupPoms=false`
+
+==== Update snapshot version
+`mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.nextMinorVersion}.0-SNAPSHOT -DgenerateBackupPoms=false`
 
 == links
 https://gist.github.com/golonzovsky/ae9cb92c020f0b8833519447b7471281[tomcat-undeploy-all] +
