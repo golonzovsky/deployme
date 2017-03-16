@@ -36,4 +36,4 @@ deploy:
   # Archive up the built documentation site.
   artifacts:
     paths:
-    - target/staging
+    - target
