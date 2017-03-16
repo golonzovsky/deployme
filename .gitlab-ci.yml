@@ -24,7 +24,7 @@ test:
   script:
     - 'mvn $MAVEN_CLI_OPTS test'
 
-# To get this working you need to define a volume while configuring your gitlab-ci-multi-runner.
+# To get `mvn deploy` working define a volume while configuring your gitlab-ci-multi-runner.
 # Mount your `settings.xml` as `/root/.m2/settings.xml` which holds your secrets.
 deploy:
   stage: deploy
