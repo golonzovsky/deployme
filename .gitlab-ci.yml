@@ -29,7 +29,8 @@ test:
 deploy:
   stage: deploy
   script:
-    - 'mvn $MAVEN_CLI_OPTS deploy'
+    - 'mvn $MAVEN_CLI_OPTS install'
+    - 'echo deploying somewhere'
   only:
     - master
   # Archive up the built documentation site.
