@@ -14,19 +14,19 @@ cache:
   paths:
     - /root/.m2/repository/
 
-validate:jdk8:
+compile:
   stage: build
   script:
     - 'mvn $MAVEN_CLI_OPTS compile'
 
-verify:jdk8:
+test:
   stage: test
   script:
     - 'mvn $MAVEN_CLI_OPTS test'
 
 # To get this working you need to define a volume while configuring your gitlab-ci-multi-runner.
 # Mount your `settings.xml` as `/root/.m2/settings.xml` which holds your secrets.
-deploy:jdk8:
+deploy:
   stage: deploy
   script:
     - 'mvn $MAVEN_CLI_OPTS deploy'
