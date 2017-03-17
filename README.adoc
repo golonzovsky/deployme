@@ -78,7 +78,7 @@ Use `-DgenerateBackupPoms=false` in command line or plugin configuration to avoi
  * `mvn versions:set -DnewVersion=2.1.0-SNAPSHOT -DgenerateBackupPoms=false`
  * `mvn versions:use-latest-releases` - update dependencies
  * `mvn versions:update-parent`
- * `mvn versions:update-properties` - update properties which are used as dependency versions
+ * `mvn versions:update-properties -Dincludes=com:* -DgenerateBackupPoms=false` - update properties which are used as dependency versions
  * `mvn versions:lock-snapshots`, `mvn versions:unlock-snapshots`
 
 ==== Revert/Commit
