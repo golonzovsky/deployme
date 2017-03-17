@@ -68,14 +68,14 @@ Next version properties: ::
 
 === Versions plugin
 http://www.mojohaus.org/versions-maven-plugin/usage.html +
-Use `generateBackupPoms=false` in command line or plugin configuration to avoid backup POMs generation.
+Use `-DgenerateBackupPoms=false` in command line or plugin configuration to avoid backup POMs generation.
 
 ==== Goals with no modifications
  * `mvn versions:display-dependency-updates` deep dependency update candidates
  * `mvn versions:display-property-updates`
 
 ==== Goals with modifications
- * `mvn versions:set -DnewVersion=2.1.0-SNAPSHOT`
+ * `mvn versions:set -DnewVersion=2.1.0-SNAPSHOT -DgenerateBackupPoms=false`
  * `mvn versions:use-latest-releases` - update dependencies
  * `mvn versions:update-parent`
  * `mvn versions:update-properties` - update properties which are used as dependency versions
