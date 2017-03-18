@@ -19,6 +19,17 @@ compile:
   script:
     - 'mvn $MAVEN_CLI_OPTS compile'
 
+build_docker:
+  stage: build
+  services:
+    - docker:dind
+  script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN 192.168.33.10
+    - docker build -t 192.168.33.10/deployme .
+    - docker push 192.168.33.10/deployme:latest
+  only:
+    - master
+
 test:
   stage: test
   script:
