@@ -4,11 +4,12 @@ Dummy project for deployment investigations.
 == possible todo:
 
 ==== maven plugins
-- [*] maven versions plugin
-- [*] maven release plugin
-- [*] maven build-helper plugin
-- [*] maven scm plugin
-- [*] maven deploy plugin
+- [*] versions-maven-plugin
+- [*] maven-release-plugin
+- [*] build-helper-maven-plugin
+- [*] maven-scm-plugin
+- [*] maven-deploy-plugin
+- [ ] docker-maven-plugin
 
 ==== containers
 - [ ] docker
