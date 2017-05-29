@@ -1,4 +1,4 @@
-= deployme
+= deployme image:https://travis-ci.org/golonzovsky/deployme.svg?branch=master[Build Status]
 Dummy project for deployment investigations.
 
 == possible todo:
