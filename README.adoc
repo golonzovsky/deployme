@@ -17,6 +17,8 @@ Dummy project for deployment investigations.
 
 ==== build pipeline
 - [ ] gitlab ci
+- [x] travis
+- [ ] jenkins
 
 ==== container orchestration
 - [ ] marathon
